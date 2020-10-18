@@ -11,8 +11,11 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+
+  bool darkTheme = false;
+
   String currentCurrency = 'USD';
-  List<double> conversionFactor = [1, 1, 1, 1, 1];
+  List<double> conversionFactor = [0, 0, 0, 0, 0];
   bool listDragged = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String coinURL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,dogecoin,tether&vs_currencies=';
@@ -38,14 +41,24 @@ class _PriceScreenState extends State<PriceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      setState(() {
+        darkTheme = true;
+      });
+    }
+    else {
+      setState(() {
+        darkTheme = false;
+      });
+    }
     SizeConfig().init(context);
     return Scaffold(
         key: _scaffoldKey,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.grey[900],
+          //backgroundColor: Colors.grey[900],
           tooltip: 'Select Currency',
-          elevation: 1,
+          //elevation: 1,
           onPressed: () {
             if (listDragged == true) {
               Navigator.pop(context);
@@ -85,8 +98,9 @@ class _PriceScreenState extends State<PriceScreen> {
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark.copyWith(
             statusBarColor: Colors.transparent,
-              systemNavigationBarColor: Colors.white,
-              systemNavigationBarIconBrightness: Brightness.dark),
+            statusBarIconBrightness: darkTheme ? Brightness.light : Brightness.dark,
+              systemNavigationBarColor: darkTheme ? Colors.black : Colors.white,
+              systemNavigationBarIconBrightness: darkTheme ? Brightness.light : Brightness.dark),
           child: Stack(
             children: [
               SafeArea(
