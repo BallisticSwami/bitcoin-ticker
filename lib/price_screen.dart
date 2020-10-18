@@ -4,6 +4,8 @@ import 'package:bitcointicker/utilities/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -11,25 +13,32 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-
   bool darkTheme = false;
 
   String currentCurrency = 'USD';
   List<double> conversionFactor = [0, 0, 0, 0, 0];
   bool listDragged = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String coinURL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,dogecoin,tether&vs_currencies=';
+  String coinURL =
+      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,dogecoin,tether&vs_currencies=';
+
+  var f = NumberFormat("###,###,###.#########", "en_US");
 
   void _getExchangeRates() async {
     var url = '$coinURL$currentCurrency';
     NetworkHelper netHelper = NetworkHelper(url);
     var data = await netHelper.getData();
     setState(() {
-      conversionFactor[0] = data["bitcoin"]["${currentCurrency.toLowerCase()}"].toDouble();
-      conversionFactor[1] = data["ethereum"]["${currentCurrency.toLowerCase()}"].toDouble();
-      conversionFactor[2] = data["litecoin"]["${currentCurrency.toLowerCase()}"].toDouble();
-      conversionFactor[3] = data["tether"]["${currentCurrency.toLowerCase()}"].toDouble();
-      conversionFactor[4] = data["dogecoin"]["${currentCurrency.toLowerCase()}"].toDouble();
+      conversionFactor[0] =
+          data["bitcoin"]["${currentCurrency.toLowerCase()}"].toDouble();
+      conversionFactor[1] =
+          data["ethereum"]["${currentCurrency.toLowerCase()}"].toDouble();
+      conversionFactor[2] =
+          data["litecoin"]["${currentCurrency.toLowerCase()}"].toDouble();
+      conversionFactor[3] =
+          data["tether"]["${currentCurrency.toLowerCase()}"].toDouble();
+      conversionFactor[4] =
+          data["dogecoin"]["${currentCurrency.toLowerCase()}"].toDouble();
     });
   }
 
@@ -41,12 +50,11 @@ class _PriceScreenState extends State<PriceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(MediaQuery.of(context).platformBrightness == Brightness.dark) {
+    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
       setState(() {
         darkTheme = true;
       });
-    }
-    else {
+    } else {
       setState(() {
         darkTheme = false;
       });
@@ -82,7 +90,7 @@ class _PriceScreenState extends State<PriceScreen> {
                           setState(() {
                             currentCurrency = currenciesList[index];
                             _getExchangeRates();
-                            listDragged  = false;
+                            listDragged = false;
                             Navigator.pop(context);
                           });
                         },
@@ -97,10 +105,12 @@ class _PriceScreenState extends State<PriceScreen> {
         ),
         body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark.copyWith(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: darkTheme ? Brightness.light : Brightness.dark,
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness:
+                  darkTheme ? Brightness.light : Brightness.dark,
               systemNavigationBarColor: darkTheme ? Colors.black : Colors.white,
-              systemNavigationBarIconBrightness: darkTheme ? Brightness.light : Brightness.dark),
+              systemNavigationBarIconBrightness:
+                  darkTheme ? Brightness.light : Brightness.dark),
           child: Stack(
             children: [
               SafeArea(
@@ -112,7 +122,8 @@ class _PriceScreenState extends State<PriceScreen> {
                           child: Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(
-                            left: SizeConfig.safeBlockHorizontal * 5, top: SizeConfig.safeBlockVertical*1.7),
+                            left: SizeConfig.safeBlockHorizontal * 5,
+                            top: SizeConfig.safeBlockVertical * 1.7),
                         child: Text(
                           'Coin\nTicker',
                           style: TextStyle(
@@ -126,16 +137,19 @@ class _PriceScreenState extends State<PriceScreen> {
                     ),
                     Expanded(
                       flex: 8,
-                      child: SizedBox(
-                        child: Container(
+                      child: Container(
+                        child: ScrollConfiguration(
+                          behavior: MyBehavior(),
                           child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
                             itemCount: imgList.length,
                             itemBuilder: (context, index) {
                               return CoinCard(
                                   imageName: imgList[index],
                                   heading: imgList[index],
                                   subtitle:
-                                      '1 ${cryptoList[index]} = ${conversionFactor[index]} $currentCurrency');
+                                      '1 ${cryptoList[index]} = ${f.format(conversionFactor[index])} $currentCurrency');
                             },
                           ),
                         ),
@@ -144,10 +158,13 @@ class _PriceScreenState extends State<PriceScreen> {
                   ],
                 ),
               ),
-              AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeIn,
-                color: Colors.black.withOpacity(listDragged ? 0.3 : 0),
+              Visibility(
+                visible: listDragged ? true : false,
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                  color: Colors.black.withOpacity(listDragged ? 0.3 : 0),
+                ),
               )
             ],
           ),
@@ -171,7 +188,7 @@ class _CoinCardState extends State<CoinCard> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      height: SizeConfig.safeBlockHorizontal * 30,
+      height: SizeConfig.safeBlockVertical * 14,
       child: Padding(
         padding: EdgeInsets.fromLTRB(
             SizeConfig.safeBlockHorizontal * 5,
@@ -214,5 +231,13 @@ class _CoinCardState extends State<CoinCard> {
             ])),
       ),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
