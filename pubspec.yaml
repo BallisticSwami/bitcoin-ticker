@@ -1,27 +1,72 @@
-name: bitcointicker
-description: A new Flutter project.
-
-
-environment:
-  sdk: ">=2.7.0 <3.0.0"
-
+description: "A new Flutter project."
+name: "bitcointicker"
 dependencies:
+  cupertino_icons: "^1.0.0"
+  http: "^0.12.2"
+  intl: "^0.16.1"
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.0
-  http: ^0.12.2
-  intl: ^0.16.1
-
 dev_dependencies:
+  local_google_fonts: "^1.0.8"
   flutter_test:
     sdk: flutter
-
+environment:
+  sdk: ">=2.7.0 <3.0.0"
 flutter:
-
-
-  uses-material-design: true
-
   assets:
-    - assets/
- 
+    - "assets/"
+  fonts:
+    - family: "Inter"
+      fonts:
+        - asset: "assets/fonts/Inter/Inter-100.ttf"
+          weight: 100
+        - asset: "assets/fonts/Inter/Inter-200.ttf"
+          weight: 200
+        - asset: "assets/fonts/Inter/Inter-300.ttf"
+          weight: 300
+        - asset: "assets/fonts/Inter/Inter-400.ttf"
+          weight: 400
+        - asset: "assets/fonts/Inter/Inter-500.ttf"
+          weight: 500
+        - asset: "assets/fonts/Inter/Inter-600.ttf"
+          weight: 600
+        - asset: "assets/fonts/Inter/Inter-700.ttf"
+          weight: 700
+        - asset: "assets/fonts/Inter/Inter-800.ttf"
+          weight: 800
+        - asset: "assets/fonts/Inter/Inter-900.ttf"
+          weight: 900
+          
+    - family: "Lato"
+      fonts:
+        - asset: "assets/fonts/Lato/Lato-100i.ttf"
+          style: "italic"
+          weight: 100
+        - asset: "assets/fonts/Lato/Lato-300i.ttf"
+          style: "italic"
+          weight: 300
+        - asset: "assets/fonts/Lato/Lato-400i.ttf"
+          style: "italic"
+          weight: 400
+        - asset: "assets/fonts/Lato/Lato-700i.ttf"
+          style: "italic"
+          weight: 700
+        - asset: "assets/fonts/Lato/Lato-900i.ttf"
+          style: "italic"
+          weight: 900
+        - asset: "assets/fonts/Lato/Lato-100.ttf"
+          weight: 100
+        - asset: "assets/fonts/Lato/Lato-300.ttf"
+          weight: 300
+        - asset: "assets/fonts/Lato/Lato-400.ttf"
+          weight: 400
+        - asset: "assets/fonts/Lato/Lato-700.ttf"
+          weight: 700
+        - asset: "assets/fonts/Lato/Lato-900.ttf"
+          weight: 900
+  uses-material-design: true
+google_fonts:
+  path: "assets/fonts"
+  fonts:
+    - "Inter"
+    - "Lato"

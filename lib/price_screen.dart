@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-
 class PriceScreen extends StatefulWidget {
   @override
   _PriceScreenState createState() => _PriceScreenState();
@@ -125,10 +124,12 @@ class _PriceScreenState extends State<PriceScreen> {
                             left: SizeConfig.safeBlockHorizontal * 5,
                             top: SizeConfig.safeBlockVertical * 1.7),
                         child: Text(
-                          'Coin\nTicker',
+                          'Coin\nTicker.',
                           style: TextStyle(
-                              fontSize: SizeConfig.safeBlockHorizontal * 6.5,
-                              fontWeight: FontWeight.w500),
+                              letterSpacing: 0.5,
+                              fontFamily: 'Inter',
+                              fontSize: SizeConfig.safeBlockHorizontal * 6.9,
+                              fontWeight: FontWeight.w600),
                         ),
                       )),
                     ),
@@ -215,6 +216,7 @@ class _CoinCardState extends State<CoinCard> {
                     Text(
                       widget.heading,
                       style: TextStyle(
+                          fontFamily: 'Inter',
                           fontSize: SizeConfig.safeBlockHorizontal * 5.2,
                           fontWeight: FontWeight.w500),
                     ),
@@ -223,6 +225,7 @@ class _CoinCardState extends State<CoinCard> {
                     ),
                     Text(widget.subtitle,
                         style: TextStyle(
+                            fontFamily: 'Lato',
                             fontSize: SizeConfig.safeBlockHorizontal * 3.8,
                             fontWeight: FontWeight.w400)),
                   ],
