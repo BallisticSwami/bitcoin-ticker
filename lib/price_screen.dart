@@ -189,7 +189,7 @@ class _CoinCardState extends State<CoinCard> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      height: SizeConfig.safeBlockVertical * 14,
+      height: SizeConfig.safeBlockVertical * 15,
       child: Padding(
         padding: EdgeInsets.fromLTRB(
             SizeConfig.safeBlockHorizontal * 5,
